@@ -1,0 +1,1193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>VET STAR</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&family=Fredoka+One&display=swap" rel="stylesheet">
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #6a11cb, #2575fc);
+            color: #fff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        .screen {
+            width: 100%;
+            max-width: 375px;
+            height: 600px;
+            padding: 20px;
+            background: rgba(255, 255, 255, 1);
+            border-radius: 20px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.15);
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            transition: all 0.4s ease;
+            animation: fadeIn 0.5s ease;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            z-index: 1;
+        }
+
+        .screen.hidden {
+            z-index: -1;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-60%); }
+            to { opacity: 1; transform: translateY(-50%); }
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        .splash-screen {
+            background: linear-gradient(135deg, #6a1b9a, #3f51b5);
+            color: white;
+            text-align: center;
+            font-size: 32px;
+            animation: fadeOut 3s forwards;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            max-width: 375px;
+            height: 600px;
+        }
+
+        @keyframes fadeOut {
+            0% { opacity: 1; }
+            80% { opacity: 1; }
+            100% { opacity: 0; visibility: hidden; }
+        }
+
+        .logo {
+            margin-top: 0;
+            font-size: 54px;
+            font-weight: bold;
+            letter-spacing: 3px;
+            font-family: 'Fredoka One', cursive;
+            animation: bounce 2s infinite;
+            background: linear-gradient(135deg, #ffffff, #3f51b5);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 2px 2px 4px rgba(106, 27, 154, 0.5);
+            padding: 0;
+            border: none;
+        }
+
+        .slogan {
+            font-size: 18px;
+            margin-top: 10px;
+            color: #fff;
+            font-family: 'Poppins', sans-serif;
+            background: none;
+            padding: 0;
+            border: none;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+        }
+
+        .subject-screen .header-container,
+        .quiz-selection-screen .header-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 20px;
+            flex-shrink: 0;
+        }
+
+        .subject-screen .logo {
+            margin-top: 0;
+            font-size: 42px;
+            animation: none;
+            background: linear-gradient(135deg, #6a1b9a, #3f51b5);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .quiz-selection-screen .subject-title {
+            margin-top: 0;
+            font-size: 36px;
+            color: #6a1b9a;
+            animation: none;
+            font-family: 'Fredoka One', cursive;
+        }
+
+        .subject-screen .slogan {
+            font-size: 16px;
+            color: #333;
+        }
+
+        #quizModeList {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            flex-grow: 1;
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 15px;
+            align-content: flex-start;
+            margin-top: 5px;
+            height: 450px;
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+        }
+
+        #quizModeList::-webkit-scrollbar {
+            display: none;
+        }
+
+        #subjectList {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            flex-grow: 1;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px 5px;
+            overflow-y: auto;
+            height: 400px;
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+        }
+
+        #subjectList::-webkit-scrollbar {
+            display: none;
+        }
+
+        #quizList {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            flex-grow: 1;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 5px 4px;
+            overflow-y: auto;
+            height: 400px;
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+        }
+
+        #quizList::-webkit-scrollbar {
+            display: none;
+        }
+
+        .quiz-mode-item,
+        .bookmark-item {
+            grid-column: 1 / -1;
+            background: linear-gradient(135deg, #6a1b9a, #3f51b5);
+            padding: 12px;
+            border-radius: 15px;
+            color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: all 0.3s ease;
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            cursor: pointer;
+            height: 60px;
+        }
+
+        .quiz-mode-item:hover,
+        .bookmark-item:hover {
+            background: linear-gradient(135deg, #ab47bc, #5c6bc0);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3), 0 0 15px rgba(255, 255, 255, 0.4);
+            transform: scale(1.02);
+        }
+
+        .subject-item,
+        .quiz-item {
+            background: linear-gradient(135deg, #6a1b9a, #3f51b5);
+            padding: 10px;
+            border-radius: 12px;
+            color: white;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            cursor: pointer;
+            height: 50px;
+        }
+
+        .subject-item:hover,
+        .quiz-item:hover {
+            background: linear-gradient(135deg, #ab47bc, #5c6bc0);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25), 0 0 10px rgba(255, 255, 255, 0.3);
+        }
+
+        .quiz-mode-name,
+        .subject-name,
+        .quiz-name,
+        .bookmark-name {
+            font-size: 16px;
+            font-weight: 700;
+            letter-spacing: 0.8px;
+        }
+
+        .progress-text {
+            font-size: 13px;
+            font-weight: 600;
+            color: #fff;
+            background: rgba(0, 0, 0, 0.3);
+            padding: 4px 8px;
+            border-radius: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .quiz-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 30px;
+            color: #333;
+            font-size: 16px;
+            align-items: center;
+        }
+
+        .back-btn {
+            background: #7c4dff;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            padding: 8px 16px;
+            font-size: 14px;
+            cursor: pointer;
+            transition: transform 0.2s;
+            margin-top: 10px;
+            flex-shrink: 0;
+        }
+
+        .back-btn:hover {
+            transform: scale(1.03);
+        }
+
+        #questionText {
+            color: #333;
+            font-size: 17px;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        #options {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        #options button {
+            display: block;
+            width: 100%;
+            max-width: 300px;
+            margin: 10px 0;
+            padding: 12px;
+            background: #ede7f6;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            color: #333;
+            font-size: 15px;
+            transition: 0.2s;
+        }
+
+        #options button.selected {
+            background: #2196f3;
+            color: white;
+        }
+
+        #options button:hover:not(:disabled) {
+            background: #d1c4e9;
+            transform: scale(1.02);
+        }
+
+        #options button.correct {
+            background: #66bb6a;
+            color: white;
+        }
+
+        #options button.wrong {
+            background: #ef5350;
+            color: white;
+        }
+
+        .next-btn, .restart-btn {
+            width: 100%;
+            padding: 12px;
+            background: #7c4dff;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            margin-top: 20px;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        .next-btn:hover:not(:disabled), .restart-btn:hover {
+            transform: scale(1.03);
+        }
+
+        .result-screen {
+            overflow-y: auto;
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+        }
+
+        .result-screen::-webkit-scrollbar {
+            display: none;
+        }
+
+        .result-title {
+            font-size: 24px;
+            color: #7c4dff;
+            text-align: center;
+            margin-bottom: 16px;
+            font-family: 'Fredoka One', cursive;
+        }
+
+        .score-card {
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+        }
+
+        .score {
+            font-size: 28px;
+            font-weight: bold;
+            color: #6a1b9a;
+            margin-bottom: 20px;
+        }
+
+        .stats {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 15px;
+        }
+
+        .stat {
+            flex: 1;
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 22px;
+            font-weight: bold;
+            color: #6a1b9a;
+            display: block;
+        }
+
+        .stat-label {
+            font-size: 14px;
+            color: #666;
+        }
+
+        .actions {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        .play-again-btn, .home-btn {
+            width: 100%;
+            padding: 12px;
+            background: #7c4dff;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        .play-again-btn:hover, .home-btn:hover {
+            transform: scale(1.03);
+        }
+
+        #timer {
+            font-size: 24px;
+            font-weight: bold;
+            color: #ff6f61;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .question-numbers {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+
+        .question-number {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background-color: #e0e0e0;
+            color: #333;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 5px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        .question-number.selected {
+            background-color: #2196f3;
+            color: #fff;
+        }
+
+        .question-number.attempted {
+            background-color: #6a1b9a;
+            color: #fff;
+        }
+
+        .question-number:hover:not(.selected) {
+            background-color: #ccc;
+        }
+
+        .question-number.attempted:hover:not(.selected) {
+            background-color: #ab47bc;
+        }
+
+        .bookmark-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            width: 36px;
+            height: 36px;
+            background-color: rgba(255, 255, 255, 0.2);
+            border: none;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: transform 0.2s, background-color 0.2s;
+        }
+
+        .bookmark-btn:hover {
+            background-color: rgba(255, 255, 255, 0.4);
+            transform: scale(1.1);
+        }
+
+        .bookmark-icon {
+            display: inline-block;
+            width: 28px;
+            height: 28px;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%236a1b9a' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M19 21v-7a2 2 0 0 0-2-2H7a2 2 0 0 0-2 2v7'/%3E%3Cpath d='M7.5 4h9'/%3E%3C/svg%3E");
+            background-size: cover;
+            background-repeat: no-repeat;
+            transition: transform 0.3s ease;
+        }
+
+        .bookmark-icon.bookmarked {
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%236a1b9a' stroke='%236a1b9a' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M19 21v-7a2 2 0 0 0-2-2H7a2 2 0 0 0-2 2v7l5-4 5 4z'/%3E%3Cpath d='M7.5 4h9'/%3E%3C/svg%3E");
+            transform: rotate(10deg);
+        }
+
+        .result-details {
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+        }
+
+        .question-summary {
+            margin-bottom: 15px;
+            padding: 10px;
+            border-radius: 8px;
+        }
+
+        .question-summary p {
+            margin: 5px 0;
+            font-size: 14px;
+            color: #333;
+        }
+
+        .correct-answer {
+            background: #e8f5e9;
+            border: 1px solid #66bb6a;
+            padding: 8px;
+            border-radius: 6px;
+            color: #333;
+        }
+
+        .wrong-answer {
+            background: #ffebee;
+            border: 1px solid #ef5350;
+            padding: 8px;
+            border-radius: 6px;
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+    <div class="screen splash-screen" id="splash">
+        <div class="logo">VET STAR</div>
+        <div class="slogan">One Stop Solution for LSA/LSI Exam</div>
+    </div>
+    <div class="screen subject-screen hidden" id="subjectScreen">
+        <div class="header-container">
+            <div class="logo">VET STAR</div>
+            <div class="slogan">One Stop Solution for LSA/LSI Exam</div>
+        </div>
+        <ul id="quizModeList"></ul>
+        <div id="subjectListContainer" class="hidden">
+            <ul id="subjectList"></ul>
+            <button class="back-btn" onclick="goBackToQuizModes()">Back to Quiz Modes</button>
+        </div>
+    </div>
+    <div class="screen quiz-selection-screen hidden" id="quizSelectionScreen">
+        <div class="header-container">
+            <div class="subject-title" id="selectedSubjectTitle"></div>
+        </div>
+        <ul id="quizList"></ul>
+        <button class="back-btn" onclick="goBackToSubjectsFromQuizSelection()">Back to Subjects</button>
+    </div>
+    <div class="screen quiz-screen hidden" id="quizScreen">
+        <div class="quiz-header">
+            <button class="back-btn" onclick="goBackToQuizSelection()">Back</button>
+            <button class="bookmark-btn" id="bookmarkBtn">
+                <span class="bookmark-icon"></span>
+            </button>
+        </div>
+        <div id="timer"> ⏱ ️ 60</div>
+        <h3 id="questionText"></h3>
+        <div id="options"></div>
+        <div class="question-numbers" id="questionNumbers"></div>
+        <button id="nextBtn" class="next-btn">Next</button>
+    </div>
+    <div class="screen result-screen hidden" id="resultScreen">
+        <div class="result-title">RESULT</div>
+        <div class="score-card">
+            <div class="score">Your Score: <span id="finalScore">0</span></div>
+            <div class="stats">
+                <div class="stat">
+                    <span class="stat-value" id="totalQuestions">0</span>
+                    <span class="stat-label">Total Que.</span>
+                </div>
+                <div class="stat">
+                    <span class="stat-value" id="attemptedQuestions">0</span>
+                    <span class="stat-label">Q. Attempted</span>
+                </div>
+                <div class="stat">
+                    <span class="stat-value" id="correctAnswers">0</span>
+                    <span class="stat-label">Correct</span>
+                </div>
+            </div>
+            <div class="stats">
+                <div class="stat">
+                    <span class="stat-value" id="incorrectAnswers">0</span>
+                    <span class="stat-label">Incorrect</span>
+                </div>
+                <div class="stat">
+                    <span class="stat-value" id="unattemptedQuestions">0</span>
+                    <span class="stat-label">Unattempted</span>
+                </div>
+                <div class="stat">
+                    <span class="stat-value" id="timeTaken">0</span>
+                    <span class="stat-label">Time (sec)</span>
+                </div>
+            </div>
+        </div>
+        <div class="result-details" id="resultDetails"></div>
+        <div class="actions">
+            <button class="play-again-btn" onclick="restartQuiz()">ATTEMPT AGAIN</button>
+            <button class="home-btn" onclick="backToQuizSelection()">Back to Quizzes</button>
+        </div>
+    </div>
+
+    <script>
+        const subjects = [
+            "Anatomy", "Extension", "LPM", "Physiology",
+            "Medicine", "Surgery", "Nutrition", "Genetics", "Pharmacology", "Gynecology"
+        ];
+
+        const quizData = {
+            "Anatomy": [
+                [
+                    { q: "Which structure is in the anterior compartment of the forearm?", o: ["Triceps brachii", "Brachioradialis", "Extensor carpi ulnaris", "Flexor digitorum profundus"], a: 3 },
+                    { q: "The diaphragm muscle is primarily innervated by which nerve?", o: ["Intercostal nerves", "Phrenic nerve", "Vagus nerve", "Spinal accessory nerve"], a: 1 }
+                ],
+                [
+                    { q: "What is the primary function of the biceps brachii?", o: ["Extension of the elbow", "Flexion of the elbow", "Abduction of the arm", "Adduction of the arm"], a: 1 },
+                    { q: "Which bone is part of the axial skeleton?", o: ["Humerus", "Femur", "Skull", "Tibia"], a: 2 },
+                    { q: "What type of joint is the elbow?", o: ["Ball-and-socket", "Hinge", "Pivot", "Saddle"], a: 1 }
+                ]
+            ],
+            "Extension": [
+                [
+                    { q: "What is the primary goal of agricultural extension?", o: ["Increase crop yield", "Improve rural livelihoods", "Promote organic farming", "Develop new crop varieties"], a: 1 },
+                    { q: "Which channel is most effective for reaching many farmers?", o: ["One-on-one visits", "Small group meetings", "Radio broadcasts", "Written publications"], a: 2 }
+                ]
+            ],
+            "LPM": [[]], "Physiology": [[]], "Medicine": [[]], "Surgery": [[]], 
+            "Nutrition": [[]], "Genetics": [[]], "Pharmacology": [[]], "Gynecology": [[]]
+        };
+
+        let currentSubject = "";
+        let currentQuiz = 0;
+        let currentQuestion = 0;
+        let score = 0;
+        let timer;
+        let remainingTime = 60;
+        let subjectProgress = {};
+        let quizProgress = {};
+        let userAnswers = [];
+        let answered = false;
+        let bookmarkedQuestions = new Set();
+        let totalTimeTaken = 0; // New variable to track total time
+        let isBookmarkMode = false;
+        let allBookmarks = {};
+
+        subjects.forEach(subj => {
+            subjectProgress[subj] = 0;
+            quizProgress[subj] = Array(quizData[subj].length).fill(0);
+            allBookmarks[subj] = {};
+            quizData[subj].forEach((_, quizIndex) => {
+                allBookmarks[subj][quizIndex] = [];
+            });
+        });
+
+        function showScreen(screenId) {
+            const screens = ["splash", "subjectScreen", "quizSelectionScreen", "quizScreen", "resultScreen"];
+            screens.forEach(id => {
+                const screen = document.getElementById(id);
+                if (id === screenId) {
+                    screen.classList.remove("hidden");
+                    screen.style.display = "flex";
+                    screen.style.opacity = "1";
+                    screen.style.transform = "translateY(-50%)";
+                } else {
+                    screen.classList.add("hidden");
+                    screen.style.display = "none";
+                }
+            });
+            window.scrollTo(0, 0);
+        }
+
+        window.onload = () => {
+            setTimeout(() => {
+                showScreen("subjectScreen");
+                loadQuizModes();
+            }, 2500);
+        };
+
+        function loadQuizModes() {
+            const list = document.getElementById("quizModeList");
+            list.innerHTML = "";
+
+            const subjectWiseLi = document.createElement("li");
+            subjectWiseLi.className = "quiz-mode-item";
+            subjectWiseLi.innerHTML = `<span class="quiz-mode-name">SUBJECT WISE QUIZ</span>`;
+            subjectWiseLi.onclick = () => showSubjects();
+            list.appendChild(subjectWiseLi);
+
+            const pyqPaperLi = document.createElement("li");
+            pyqPaperLi.className = "quiz-mode-item";
+            pyqPaperLi.innerHTML = `<span class="quiz-mode-name">PYQ PAPER QUIZ</span>`;
+            pyqPaperLi.onclick = () => alert("Feature coming soon!");
+            list.appendChild(pyqPaperLi);
+        }
+
+        function showSubjects() {
+            document.getElementById("quizModeList").classList.add("hidden");
+            const subjectListContainer = document.getElementById("subjectListContainer");
+            subjectListContainer.classList.remove("hidden");
+            subjectListContainer.style.display = "flex";
+            subjectListContainer.style.flexDirection = "column";
+            loadSubjects();
+        }
+
+        function goBackToQuizModes() {
+            document.getElementById("subjectListContainer").classList.add("hidden");
+            const quizModeList = document.getElementById("quizModeList");
+            quizModeList.classList.remove("hidden");
+            quizModeList.style.display = "grid";
+            loadQuizModes();
+        }
+
+        function loadSubjects() {
+            const list = document.getElementById("subjectList");
+            list.innerHTML = "";
+            subjects.forEach(subj => {
+                const li = document.createElement("li");
+                li.className = "subject-item";
+                li.innerHTML = `
+                    <span class="subject-name">${subj}</span>
+                    <span class="progress-text">${subjectProgress[subj]}%</span>
+                `;
+                li.onclick = () => showQuizSelection(subj);
+                list.appendChild(li);
+            });
+
+            const bookmarkLi = document.createElement("li");
+            bookmarkLi.className = "bookmark-item";
+            bookmarkLi.innerHTML = `<span class="bookmark-name">All Bookmarks</span>`;
+            bookmarkLi.onclick = () => showAllBookmarks();
+            list.appendChild(bookmarkLi);
+        }
+
+        function showQuizSelection(subj) {
+            currentSubject = subj;
+            showScreen("quizSelectionScreen");
+            document.getElementById("selectedSubjectTitle").innerText = subj;
+
+            const list = document.getElementById("quizList");
+            list.innerHTML = "";
+            quizData[subj].forEach((quiz, index) => {
+                const li = document.createElement("li");
+                li.className = "quiz-item";
+                li.innerHTML = `
+                    <span class="quiz-name">Quiz ${index + 1}</span>
+                    <span class="progress-text">${quizProgress[subj][index]}%</span>
+                `;
+                li.onclick = () => startQuiz(subj, index);
+                list.appendChild(li);
+            });
+        }
+
+        function goBackToSubjectsFromQuizSelection() {
+            showScreen("subjectScreen");
+            showSubjects();
+        }
+
+        function startQuiz(subj, quizIndex) {
+            if (!quizData[subj] || !quizData[subj][quizIndex] || quizData[subj][quizIndex].length === 0) {
+                alert("No questions available for this quiz!");
+                return;
+            }
+            currentSubject = subj;
+            currentQuiz = quizIndex;
+            currentQuestion = 0;
+            score = 0;
+            remainingTime = 60;
+            userAnswers = [];
+            answered = false;
+            bookmarkedQuestions.clear();
+            totalTimeTaken = 0; // Reset total time
+            isBookmarkMode = false;
+            if (timer) clearInterval(timer);
+
+            showScreen("quizScreen");
+            resetQuizUI();
+            loadQuestion();
+        }
+
+        function showAllBookmarks() {
+            currentQuestion = 0;
+            score = 0;
+            remainingTime = 60;
+            userAnswers = [];
+            answered = false;
+            bookmarkedQuestions.clear();
+            totalTimeTaken = 0; // Reset total time
+            isBookmarkMode = true;
+
+            const bookmarkedQuestionsList = [];
+            Object.keys(allBookmarks).forEach(subject => {
+                Object.keys(allBookmarks[subject]).forEach(quizIndex => {
+                    const questionIndices = allBookmarks[subject][quizIndex];
+                    questionIndices.forEach(qIndex => {
+                        if (quizData[subject] && quizData[subject][quizIndex] && quizData[subject][quizIndex][qIndex]) {
+                            const question = quizData[subject][quizIndex][qIndex];
+                            bookmarkedQuestionsList.push({
+                                subject: subject,
+                                quizIndex: parseInt(quizIndex),
+                                questionIndex: qIndex,
+                                question: question
+                            });
+                        }
+                    });
+                });
+            });
+
+            if (bookmarkedQuestionsList.length === 0) {
+                alert("No bookmarked questions found!");
+                return;
+            }
+
+            window.bookmarkedQuestionsList = bookmarkedQuestionsList;
+
+            showScreen("quizScreen");
+            resetQuizUI();
+            loadQuestion();
+        }
+
+        function goBackToQuizSelection() {
+            if (timer) clearInterval(timer);
+            if (isBookmarkMode) {
+                showScreen("subjectScreen");
+                showSubjects();
+            } else {
+                showScreen("quizSelectionScreen");
+                showQuizSelection(currentSubject);
+            }
+        }
+
+        function resetQuizUI() {
+            document.getElementById("questionText").innerText = "";
+            document.getElementById("options").innerHTML = "";
+            document.getElementById("questionNumbers").innerHTML = "";
+            document.getElementById("timer").innerText = " ⏱ ️ 60";
+            document.getElementById("nextBtn").innerText = "Next";
+            document.getElementById("nextBtn").disabled = false;
+            document.querySelector(".bookmark-icon").classList.remove("bookmarked");
+        }
+
+        function loadQuestion() {
+            clearInterval(timer);
+            let question;
+            if (isBookmarkMode) {
+                const bookmarkedQuestionsList = window.bookmarkedQuestionsList;
+                if (currentQuestion >= bookmarkedQuestionsList.length) {
+                    showResults();
+                    return;
+                }
+                const bookmark = bookmarkedQuestionsList[currentQuestion];
+                question = bookmark.question;
+                document.getElementById("questionText").innerText = `${bookmark.subject} - Quiz ${bookmark.quizIndex + 1}: ${question.q}`;
+            } else {
+                const questionSet = quizData[currentSubject][currentQuiz];
+                if (currentQuestion >= questionSet.length) {
+                    showResults();
+                    return;
+                }
+                question = questionSet[currentQuestion];
+                document.getElementById("questionText").innerText = question.q;
+            }
+
+            const optionsBox = document.getElementById("options");
+            optionsBox.innerHTML = "";
+            question.o.forEach((option, index) => {
+                const btn = document.createElement("button");
+                btn.innerText = option;
+                btn.onclick = () => selectOption(index);
+                if (userAnswers[currentQuestion] && userAnswers[currentQuestion].selected === index) {
+                    btn.classList.add("selected");
+                }
+                optionsBox.appendChild(btn);
+            });
+
+            const nextBtn = document.getElementById("nextBtn");
+            if (isBookmarkMode) {
+                nextBtn.innerText = currentQuestion === window.bookmarkedQuestionsList.length - 1 ? "Submit Bookmarks" : "Next";
+            } else {
+                const questionSet = quizData[currentSubject][currentQuiz];
+                nextBtn.innerText = currentQuestion === questionSet.length - 1 ? "Submit Quiz" : "Next";
+            }
+
+            nextBtn.disabled = false;
+            startTimer(60);
+            loadQuestionNumbers(isBookmarkMode ? window.bookmarkedQuestionsList.length : quizData[currentSubject][currentQuiz].length);
+            updateBookmarkIcon();
+        }
+
+        function selectOption(index) {
+            const options = document.querySelectorAll("#options button");
+            options.forEach(btn => btn.classList.remove("selected"));
+            options[index].classList.add("selected");
+
+            let correct;
+            if (isBookmarkMode) {
+                correct = window.bookmarkedQuestionsList[currentQuestion].question.a;
+            } else {
+                correct = quizData[currentSubject][currentQuiz][currentQuestion].a;
+            }
+
+            const timeSpent = 60 - remainingTime;
+            totalTimeTaken += timeSpent; // Add to total time
+            if (userAnswers[currentQuestion]) {
+                userAnswers[currentQuestion].selected = index;
+                userAnswers[currentQuestion].timeSpent = timeSpent;
+            } else {
+                userAnswers[currentQuestion] = { question: currentQuestion, selected: index, correct: correct, timeSpent: timeSpent };
+            }
+        }
+
+        function checkAnswer() {
+            let correct;
+            if (isBookmarkMode) {
+                correct = window.bookmarkedQuestionsList[currentQuestion].question.a;
+            } else {
+                correct = quizData[currentSubject][currentQuiz][currentQuestion].a;
+            }
+
+            const selected = userAnswers[currentQuestion] ? userAnswers[currentQuestion].selected : null;
+            if (selected !== null && selected === correct) {
+                score++;
+            }
+            const options = document.querySelectorAll("#options button");
+            options.forEach(btn => btn.disabled = true);
+            options[correct].classList.add("correct");
+            if (selected !== null && selected !== correct) {
+                options[selected].classList.add("wrong");
+            }
+        }
+
+        function startTimer(seconds) {
+            remainingTime = seconds;
+            document.getElementById("timer").innerText = ` ⏱ ️ ${remainingTime}`;
+            timer = setInterval(() => {
+                remainingTime--;
+                document.getElementById("timer").innerText = ` ⏱ ️ ${remainingTime}`;
+                if (remainingTime <= 0) {
+                    clearInterval(timer);
+                    answered = true;
+                    const options = document.querySelectorAll("#options button");
+                    options.forEach(btn => btn.disabled = true);
+                    let correct;
+                    if (isBookmarkMode) {
+                        correct = window.bookmarkedQuestionsList[currentQuestion].question.a;
+                    } else {
+                        correct = quizData[currentSubject][currentQuiz][currentQuestion].a;
+                    }
+                    const timeSpent = 60;
+                    totalTimeTaken += timeSpent; // Add to total time even if time runs out
+                    if (!userAnswers[currentQuestion]) {
+                        userAnswers[currentQuestion] = { question: currentQuestion, selected: null, correct: correct, timeSpent: timeSpent };
+                    } else {
+                        userAnswers[currentQuestion].timeSpent = timeSpent;
+                    }
+                    updateQuestionNumbers();
+                }
+            }, 1000);
+        }
+
+        function loadQuestionNumbers(total) {
+            const questionNumbers = document.getElementById("questionNumbers");
+            questionNumbers.innerHTML = "";
+            for (let i = 0; i < total; i++) {
+                const num = document.createElement("div");
+                num.className = "question-number";
+                num.innerText = i + 1;
+                if (i === currentQuestion) num.classList.add("selected");
+                if (userAnswers[i] && userAnswers[i].selected !== null) {
+                    num.classList.add("attempted");
+                }
+                num.onclick = () => jumpToQuestion(i);
+                questionNumbers.appendChild(num);
+            }
+        }
+
+        function updateQuestionNumbers() {
+            const nums = document.querySelectorAll(".question-number");
+            nums[currentQuestion].classList.remove("selected");
+            if (userAnswers[currentQuestion] && userAnswers[currentQuestion].selected !== null) {
+                nums[currentQuestion].classList.add("attempted");
+            }
+        }
+
+        function jumpToQuestion(index) {
+            clearInterval(timer);
+            checkAnswer();
+            totalTimeTaken += (60 - remainingTime); // Add remaining time to total before jumping
+            currentQuestion = index;
+            answered = false;
+            loadQuestion();
+        }
+
+        function updateBookmarkIcon() {
+            const bookmarkIcon = document.querySelector(".bookmark-icon");
+            if (isBookmarkMode) {
+                const bookmark = window.bookmarkedQuestionsList[currentQuestion];
+                const subject = bookmark.subject;
+                const quizIndex = bookmark.quizIndex;
+                const questionIndex = bookmark.questionIndex;
+                if (allBookmarks[subject][quizIndex].includes(questionIndex)) {
+                    bookmarkIcon.classList.add("bookmarked");
+                } else {
+                    bookmarkIcon.classList.remove("bookmarked");
+                }
+            } else {
+                if (bookmarkedQuestions.has(currentQuestion)) {
+                    bookmarkIcon.classList.add("bookmarked");
+                } else {
+                    bookmarkIcon.classList.remove("bookmarked");
+                }
+            }
+        }
+
+        document.getElementById("bookmarkBtn").onclick = () => {
+            const bookmarkIcon = document.querySelector(".bookmark-icon");
+            if (isBookmarkMode) {
+                const bookmark = window.bookmarkedQuestionsList[currentQuestion];
+                const subject = bookmark.subject;
+                const quizIndex = bookmark.quizIndex;
+                const questionIndex = bookmark.questionIndex;
+                const bookmarks = allBookmarks[subject][quizIndex];
+                const index = bookmarks.indexOf(questionIndex);
+                if (index !== -1) {
+                    bookmarks.splice(index, 1);
+                    bookmarkIcon.classList.remove("bookmarked");
+                } else {
+                    bookmarks.push(questionIndex);
+                    bookmarkIcon.classList.add("bookmarked");
+                }
+            } else {
+                if (bookmarkedQuestions.has(currentQuestion)) {
+                    bookmarkedQuestions.delete(currentQuestion);
+                    allBookmarks[currentSubject][currentQuiz] = allBookmarks[currentSubject][currentQuiz].filter(q => q !== currentQuestion);
+                    bookmarkIcon.classList.remove("bookmarked");
+                } else {
+                    bookmarkedQuestions.add(currentQuestion);
+                    if (!allBookmarks[currentSubject][currentQuiz].includes(currentQuestion)) {
+                        allBookmarks[currentSubject][currentQuiz].push(currentQuestion);
+                    }
+                    bookmarkIcon.classList.add("bookmarked");
+                }
+            }
+        };
+
+        document.getElementById("nextBtn").onclick = () => {
+            checkAnswer();
+            totalTimeTaken += (60 - remainingTime); // Add time before moving to next
+            clearInterval(timer);
+            updateQuestionNumbers();
+            currentQuestion++;
+            if (isBookmarkMode) {
+                if (currentQuestion < window.bookmarkedQuestionsList.length) {
+                    answered = false;
+                    loadQuestion();
+                } else {
+                    showResults();
+                }
+            } else {
+                if (currentQuestion < quizData[currentSubject][currentQuiz].length) {
+                    answered = false;
+                    loadQuestion();
+                } else {
+                    showResults();
+                }
+            }
+        };
+
+        function showResults() {
+            showScreen("resultScreen");
+
+            const totalQuestions = isBookmarkMode ? window.bookmarkedQuestionsList.length : quizData[currentSubject][currentQuiz].length;
+            const attempted = userAnswers.filter(answer => answer && answer.selected !== null).length;
+            const unattempted = totalQuestions - attempted;
+
+            document.getElementById("finalScore").innerText = `${score}/${totalQuestions}`;
+            document.getElementById("totalQuestions").innerText = totalQuestions;
+            document.getElementById("attemptedQuestions").innerText = attempted;
+            document.getElementById("correctAnswers").innerText = score;
+            document.getElementById("incorrectAnswers").innerText = userAnswers.filter(answer => answer && answer.selected !== null && answer.selected !== answer.correct).length;
+            document.getElementById("unattemptedQuestions").innerText = unattempted;
+            document.getElementById("timeTaken").innerText = totalTimeTaken;
+
+            if (!isBookmarkMode) {
+                quizProgress[currentSubject][currentQuiz] = Math.round((score / totalQuestions) * 100);
+                const totalQuizScores = quizProgress[currentSubject].reduce((sum, score) => sum + score, 0);
+                subjectProgress[currentSubject] = Math.round(totalQuizScores / quizProgress[currentSubject].length);
+            }
+
+            const resultDetails = document.getElementById("resultDetails");
+            resultDetails.innerHTML = "";
+            if (isBookmarkMode) {
+                window.bookmarkedQuestionsList.forEach((bookmark, index) => {
+                    const q = bookmark.question;
+                    const summary = document.createElement("div");
+                    summary.className = "question-summary";
+                    summary.innerHTML = `<p>${bookmark.subject} - Quiz ${bookmark.quizIndex + 1}, Question ${bookmark.questionIndex + 1}: ${q.q}</p>`;
+
+                    const correctAnswer = document.createElement("p");
+                    correctAnswer.className = "correct-answer";
+                    correctAnswer.innerText = `Correct Answer: ${q.o[q.a]}`;
+                    summary.appendChild(correctAnswer);
+
+                    const userAnswer = userAnswers[index];
+                    if (userAnswer && userAnswer.selected !== null) {
+                        if (userAnswer.selected !== userAnswer.correct) {
+                            const wrongAnswer = document.createElement("p");
+                            wrongAnswer.className = "wrong-answer";
+                            wrongAnswer.innerText = `Your Answer: ${q.o[userAnswer.selected]}`;
+                            summary.appendChild(wrongAnswer);
+                        }
+                    } else {
+                        const notAttempted = document.createElement("p");
+                        notAttempted.className = "wrong-answer";
+                        notAttempted.innerText = "Not Attempted";
+                        summary.appendChild(notAttempted);
+                    }
+
+                    resultDetails.appendChild(summary);
+                });
+            } else {
+                quizData[currentSubject][currentQuiz].forEach((q, index) => {
+                    const summary = document.createElement("div");
+                    summary.className = "question-summary";
+                    summary.innerHTML = `<p>Question ${index + 1}: ${q.q}</p>`;
+
+                    const correctAnswer = document.createElement("p");
+                    correctAnswer.className = "correct-answer";
+                    correctAnswer.innerText = `Correct Answer: ${q.o[q.a]}`;
+                    summary.appendChild(correctAnswer);
+
+                    const userAnswer = userAnswers[index];
+                    if (userAnswer && userAnswer.selected !== null) {
+                        if (userAnswer.selected !== userAnswer.correct) {
+                            const wrongAnswer = document.createElement("p");
+                            wrongAnswer.className = "wrong-answer";
+                            wrongAnswer.innerText = `Your Answer: ${q.o[userAnswer.selected]}`;
+                            summary.appendChild(wrongAnswer);
+                        }
+                    } else {
+                        const notAttempted = document.createElement("p");
+                        notAttempted.className = "wrong-answer";
+                        notAttempted.innerText = "Not Attempted";
+                        summary.appendChild(notAttempted);
+                    }
+
+                    resultDetails.appendChild(summary);
+                });
+            }
+        }
+
+        function restartQuiz() {
+            if (isBookmarkMode) {
+                showAllBookmarks();
+            } else {
+                startQuiz(currentSubject, currentQuiz);
+            }
+        }
+
+        function backToQuizSelection() {
+            if (timer) clearInterval(timer);
+            showScreen("quizSelectionScreen");
+            showQuizSelection(currentSubject);
+            currentSubject = "";
+            currentQuiz = 0;
+            currentQuestion = 0;
+            score = 0;
+            userAnswers = [];
+            answered = false;
+            bookmarkedQuestions.clear();
+            totalTimeTaken = 0;
+            isBookmarkMode = false;
+        }
+    </script>
+</body>
+</html>
